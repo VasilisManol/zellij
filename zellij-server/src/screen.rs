@@ -280,6 +280,7 @@ pub enum ScreenInstruction {
     PreviousSwapLayout(ClientId),
     NextSwapLayout(ClientId),
     QueryTabNames(ClientId),
+    QueryPaneNames(ClientId),
     NewTiledPluginPane(
         RunPluginOrAlias,
         Option<String>,
@@ -553,6 +554,7 @@ impl From<&ScreenInstruction> for ScreenContext {
             ScreenInstruction::PreviousSwapLayout(..) => ScreenContext::PreviousSwapLayout,
             ScreenInstruction::NextSwapLayout(..) => ScreenContext::NextSwapLayout,
             ScreenInstruction::QueryTabNames(..) => ScreenContext::QueryTabNames,
+            ScreenInstruction::QueryPaneNames(..) => ScreenContext::QueryPaneNames,
             ScreenInstruction::NewTiledPluginPane(..) => ScreenContext::NewTiledPluginPane,
             ScreenInstruction::NewFloatingPluginPane(..) => ScreenContext::NewFloatingPluginPane,
             ScreenInstruction::StartOrReloadPluginPane(..) => {
@@ -3898,6 +3900,19 @@ pub(crate) fn screen_thread_main(
                     .bus
                     .senders
                     .send_to_server(ServerInstruction::Log(tab_names, client_id))?;
+            },
+            ScreenInstruction::QueryPaneNames(client_id) => {
+                let pane_names = screen
+                    .get_tabs_mut()
+                    .values()
+                    .flat_map(|tab| tab.pane_infos())
+                    .into_iter()
+                    .map(|pane_info| pane_info.title)
+                    .collect();
+                screen
+                    .bus
+                    .senders
+                    .send_to_server(ServerInstruction::Log(pane_names, client_id))?;
             },
             ScreenInstruction::NewTiledPluginPane(
                 run_plugin,
