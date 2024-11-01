@@ -545,6 +545,10 @@ impl TryFrom<ProtobufAction> for Action {
                 Some(_) => Err("QueryTabNames should not have a payload"),
                 None => Ok(Action::QueryTabNames),
             },
+            Some(ProtobufActionName::QueryPaneNames) => match protobuf_action.optional_payload {
+                Some(_) => Err("QueryPaneNames should not have a payload"),
+                None => Ok(Action::QueryPaneNames),
+            },
             Some(ProtobufActionName::NewTiledPluginPane) => {
                 match protobuf_action.optional_payload {
                     Some(OptionalPayload::NewTiledPluginPanePayload(payload)) => {
@@ -1181,6 +1185,10 @@ impl TryFrom<Action> for ProtobufAction {
             }),
             Action::QueryTabNames => Ok(ProtobufAction {
                 name: ProtobufActionName::QueryTabNames as i32,
+                optional_payload: None,
+            }),
+            Action::QueryPaneNames => Ok(ProtobufAction {
+                name: ProtobufActionName::QueryPaneNames as i32,
                 optional_payload: None,
             }),
             Action::NewTiledPluginPane(run_plugin, pane_name, skip_plugin_cache, _cwd) => {

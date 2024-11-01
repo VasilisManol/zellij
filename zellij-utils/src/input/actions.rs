@@ -246,6 +246,7 @@ pub enum Action {
     NextSwapLayout,
     /// Query all tab names
     QueryTabNames,
+    QueryPaneNames,
     /// Open a new tiled (embedded, non-floating) plugin pane
     NewTiledPluginPane(RunPluginOrAlias, Option<String>, bool, Option<PathBuf>), // String is an optional name, bool is
     // skip_cache, Option<PathBuf> is cwd
@@ -649,6 +650,7 @@ impl Action {
             CliAction::PreviousSwapLayout => Ok(vec![Action::PreviousSwapLayout]),
             CliAction::NextSwapLayout => Ok(vec![Action::NextSwapLayout]),
             CliAction::QueryTabNames => Ok(vec![Action::QueryTabNames]),
+            CliAction::QueryPaneNames => Ok(vec![Action::QueryPaneNames]),
             CliAction::StartOrReloadPlugin { url, configuration } => {
                 let current_dir = get_current_dir();
                 let run_plugin_or_alias = RunPluginOrAlias::from_url(

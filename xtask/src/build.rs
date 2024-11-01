@@ -81,6 +81,7 @@ pub fn build(sh: &Shell, flags: flags::Build) -> anyhow::Result<()> {
             }
             if needs_regeneration {
                 prost
+                    .protoc_arg("--experimental_allow_proto3_optional")
                     .compile_protos(&proto_files, &[protobuf_source_dir])
                     .unwrap();
             }
