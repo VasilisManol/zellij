@@ -114,6 +114,7 @@ pub enum Action {
     /// Switch focus to next pane in specified direction.
     FocusNextPane,
     FocusPreviousPane,
+    FocusPaneName(String),
     /// Move the focus pane in specified direction.
     SwitchFocus,
     MoveFocus(Direction),
@@ -246,6 +247,7 @@ pub enum Action {
     NextSwapLayout,
     /// Query all tab names
     QueryTabNames,
+    /// Query all pane names
     QueryPaneNames,
     /// Open a new tiled (embedded, non-floating) plugin pane
     NewTiledPluginPane(RunPluginOrAlias, Option<String>, bool, Option<PathBuf>), // String is an optional name, bool is
@@ -326,6 +328,7 @@ impl Action {
             CliAction::Resize { resize, direction } => Ok(vec![Action::Resize(resize, direction)]),
             CliAction::FocusNextPane => Ok(vec![Action::FocusNextPane]),
             CliAction::FocusPreviousPane => Ok(vec![Action::FocusPreviousPane]),
+            CliAction::FocusPaneName { name } => Ok(vec![Action::FocusPaneName(name)]),
             CliAction::MoveFocus { direction } => Ok(vec![Action::MoveFocus(direction)]),
             CliAction::MoveFocusOrTab { direction } => Ok(vec![Action::MoveFocusOrTab(direction)]),
             CliAction::MovePane { direction } => Ok(vec![Action::MovePane(direction)]),

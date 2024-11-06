@@ -437,7 +437,6 @@ pub enum ActionName {
     PreviousSwapLayout = 64,
     NextSwapLayout = 65,
     QueryTabNames = 66,
-    QueryPaneNames = 85,
     NewTiledPluginPane = 67,
     NewFloatingPluginPane = 68,
     StartOrReloadPlugin = 69,
@@ -457,6 +456,8 @@ pub enum ActionName {
     MoveTab = 83,
     KeybindPipe = 84,
     TogglePanePinned = 85,
+    QueryPaneNames = 86,
+    FocusPaneName = 87,
 }
 impl ActionName {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -473,6 +474,7 @@ impl ActionName {
             ActionName::Resize => "Resize",
             ActionName::FocusNextPane => "FocusNextPane",
             ActionName::FocusPreviousPane => "FocusPreviousPane",
+            ActionName::FocusPaneName => "FocusPanePane",
             ActionName::SwitchFocus => "SwitchFocus",
             ActionName::MoveFocus => "MoveFocus",
             ActionName::MoveFocusOrTab => "MoveFocusOrTab",
@@ -565,6 +567,7 @@ impl ActionName {
             "Resize" => Some(Self::Resize),
             "FocusNextPane" => Some(Self::FocusNextPane),
             "FocusPreviousPane" => Some(Self::FocusPreviousPane),
+            "FocusPaneName" => Some(Self::FocusPaneName),
             "SwitchFocus" => Some(Self::SwitchFocus),
             "MoveFocus" => Some(Self::MoveFocus),
             "MoveFocusOrTab" => Some(Self::MoveFocusOrTab),

@@ -2412,6 +2412,21 @@ impl Tab {
             self.tiled_panes.focus_pane_on_edge(direction, client_id);
         }
     }
+    pub fn focus_pane_name(&mut self, pane_title: String, client_id: ClientId) {
+        let pane_to_focus = self
+            .pane_infos()
+            .into_iter()
+            .find(|p| p.title == pane_title);
+        match pane_to_focus {
+            Some(pane_to_focus) => {
+                let _ =
+                    self.focus_pane_with_id(PaneId::Terminal(pane_to_focus.id), false, client_id);
+            },
+            None => {
+                log::error!("No pane with title:{}", pane_title);
+            },
+        }
+    }
     // returns a boolean that indicates whether the focus moved
     pub fn move_focus_left(&mut self, client_id: ClientId) -> Result<bool> {
         let err_context = || format!("failed to move focus left for client {}", client_id);

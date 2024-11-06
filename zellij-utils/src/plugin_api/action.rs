@@ -780,6 +780,13 @@ impl TryFrom<Action> for ProtobufAction {
                 name: ProtobufActionName::FocusPreviousPane as i32,
                 optional_payload: None,
             }),
+            Action::FocusPaneName(name) => Ok(ProtobufAction {
+                name: ProtobufActionName::FocusPaneName as i32,
+                optional_payload: Some(OptionalPayload::GoToTabNamePayload(GoToTabNamePayload {
+                    tab_name: name,
+                    create: false,
+                })),
+            }),
             Action::SwitchFocus => Ok(ProtobufAction {
                 name: ProtobufActionName::SwitchFocus as i32,
                 optional_payload: None,

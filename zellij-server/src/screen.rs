@@ -166,6 +166,7 @@ pub enum ScreenInstruction {
     Resize(ClientId, ResizeStrategy),
     SwitchFocus(ClientId),
     FocusNextPane(ClientId),
+    FocusPaneName(String, ClientId),
     FocusPreviousPane(ClientId),
     MoveFocusLeft(ClientId),
     MoveFocusLeftOrPreviousTab(ClientId),
@@ -452,6 +453,7 @@ impl From<&ScreenInstruction> for ScreenContext {
             ScreenInstruction::SwitchFocus(..) => ScreenContext::SwitchFocus,
             ScreenInstruction::FocusNextPane(..) => ScreenContext::FocusNextPane,
             ScreenInstruction::FocusPreviousPane(..) => ScreenContext::FocusPreviousPane,
+            ScreenInstruction::FocusPaneName(..) => ScreenContext::FocusPaneName,
             ScreenInstruction::MoveFocusLeft(..) => ScreenContext::MoveFocusLeft,
             ScreenInstruction::MoveFocusLeftOrPreviousTab(..) => {
                 ScreenContext::MoveFocusLeftOrPreviousTab
@@ -3031,6 +3033,17 @@ pub(crate) fn screen_thread_main(
                 screen.unblock_input()?;
                 screen.log_and_report_session_state()?;
             },
+            ScreenInstruction::FocusPaneName(pane_title, client_id) => {
+                active_tab_and_connected_client_id!(
+                    screen,
+                    client_id,
+                    |tab: &mut Tab, client_id: ClientId| tab.focus_pane_name(pane_title, client_id)
+                );
+
+                screen.render(None)?;
+                screen.unblock_input()?;
+                screen.log_and_report_session_state()?;
+            },
             ScreenInstruction::MoveFocusLeft(client_id) => {
                 active_tab_and_connected_client_id!(
                     screen,
@@ -3374,6 +3387,7 @@ pub(crate) fn screen_thread_main(
             ScreenInstruction::ClosePane(id, client_id) => {
                 match client_id {
                     Some(client_id) => {
+                        // MALLON AUTO XREAIZETAI NA XRHSIMOPOIHSW
                         active_tab!(screen, client_id, |tab: &mut Tab| tab.close_pane(
                             id,
                             false,
