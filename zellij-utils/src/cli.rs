@@ -401,6 +401,10 @@ pub enum CliAction {
     FocusNextPane,
     /// Change focus to the previous pane
     FocusPreviousPane,
+    /// Focus pane with name [name]
+    FocusPaneName {
+        name: String,
+    },
     /// Move the focused pane in the specified direction. [right|left|up|down]
     MoveFocus {
         direction: Direction,
@@ -636,6 +640,7 @@ pub enum CliAction {
     NextSwapLayout,
     /// Query all tab names
     QueryTabNames,
+    /// Query all pane names
     QueryPaneNames,
     StartOrReloadPlugin {
         url: String,
