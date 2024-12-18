@@ -2417,10 +2417,14 @@ impl Tab {
             .pane_infos()
             .into_iter()
             .find(|p| p.title == pane_title);
+        let full_screen = self.is_fullscreen_active();
         match pane_to_focus {
             Some(pane_to_focus) => {
                 let _ =
                     self.focus_pane_with_id(PaneId::Terminal(pane_to_focus.id), false, client_id);
+                if full_screen {
+                    self.tiled_panes.toggle_active_pane_fullscreen(client_id);
+                }
             },
             None => {
                 log::error!("No pane with title:{}", pane_title);
